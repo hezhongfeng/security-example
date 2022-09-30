@@ -21,16 +21,16 @@ public class DefaultSecurityConfig {
 
 		// String[] antMatchersAnonymous = {"/api/v1/login/**", "/api/v1/content",};
 		// @formatter:off
-		http
+		// http
 				// 认证请求
-				.authorizeRequests()
+				// .authorizeRequests()
 				// 放行所有OPTIONS请求
-				.antMatchers(HttpMethod.OPTIONS).permitAll()
+				// .antMatchers(HttpMethod.OPTIONS).permitAll()
 				// 放行登录方法
 				// .antMatchers(antMatchersAnonymous).permitAll()
 				// 所有API请求都需要登录访问
 				// .antMatchers("/api/**").authenticated()
-				.anyRequest().authenticated()
+				// .anyRequest().authenticated()
 				// RBAC 动态 url 认证
 				// .anyRequest().access("@rbacAuthorityService.hasPermission(request,authentication)")
 				// 定义错误处理
@@ -43,11 +43,14 @@ public class DefaultSecurityConfig {
 				// .and().cors()
 				// // 关闭 CSRF
 				// .and().csrf().disable();
-				.and().formLogin();
+				// .and().formLogin();
 
 		// 添加自定义的JWT过滤器
     // http.addFilterBefore(new JWTFilter(), LogoutFilter.class);
 		// @formatter:on
+
+		http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
+				.formLogin();
 
 		return http.build();
 	}
