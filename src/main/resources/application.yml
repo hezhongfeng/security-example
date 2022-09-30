@@ -1,0 +1,10 @@
+server:
+  port: 5123
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        security: DEBUG
+        web: DEBUG
