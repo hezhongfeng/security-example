@@ -63,9 +63,9 @@ public class DefaultSecurityConfig {
 
 	// @Bean
 	// UserDetailsService users() {
-	// 	UserDetails user = User.builder().username("user").password(passwordEncoder().encode("1"))
-	// 			.roles("USER").build();
-	// 	return new InMemoryUserDetailsManager(user);
+	// UserDetails user = User.builder().username("user").password(passwordEncoder().encode("1"))
+	// .roles("USER").build();
+	// return new InMemoryUserDetailsManager(user);
 	// }
 
 	// 密码处理
