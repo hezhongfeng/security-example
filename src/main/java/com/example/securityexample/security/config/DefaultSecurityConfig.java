@@ -1,5 +1,6 @@
 package com.example.securityexample.security.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
@@ -15,6 +18,9 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 // 一般用户的 security config
 @EnableWebSecurity
 public class DefaultSecurityConfig {
+
+	@Autowired
+	SiteAuthenticationSuccessHandler siteAuthenticationSuccessHandler;
 
 	@Bean
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -50,16 +56,22 @@ public class DefaultSecurityConfig {
 		// @formatter:on
 
 		http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
-				.formLogin();
+				.formLogin().successHandler(siteAuthenticationSuccessHandler);
 
 		return http.build();
 	}
 
 	@Bean
 	UserDetailsService users() {
-		UserDetails user = User.withDefaultPasswordEncoder().username("user").password("1")
+		UserDetails user = User.builder().username("user").password(passwordEncoder().encode("1"))
 				.roles("USER").build();
 		return new InMemoryUserDetailsManager(user);
+	}
+
+	// 密码处理
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 
 }

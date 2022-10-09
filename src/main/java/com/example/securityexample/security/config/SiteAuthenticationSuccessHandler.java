@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+// 登录成功调取的接口
 @Component
 public class SiteAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
