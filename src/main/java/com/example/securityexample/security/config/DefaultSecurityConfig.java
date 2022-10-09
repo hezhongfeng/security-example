@@ -61,12 +61,12 @@ public class DefaultSecurityConfig {
 		return http.build();
 	}
 
-	@Bean
-	UserDetailsService users() {
-		UserDetails user = User.builder().username("user").password(passwordEncoder().encode("1"))
-				.roles("USER").build();
-		return new InMemoryUserDetailsManager(user);
-	}
+	// @Bean
+	// UserDetailsService users() {
+	// 	UserDetails user = User.builder().username("user").password(passwordEncoder().encode("1"))
+	// 			.roles("USER").build();
+	// 	return new InMemoryUserDetailsManager(user);
+	// }
 
 	// 密码处理
 	@Bean
