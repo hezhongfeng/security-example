@@ -13,17 +13,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
 
 // 一般用户的 security config
 @EnableWebSecurity
-public class DefaultSecurityConfig {
+public class AdminSecurityConfig {
 
-	@Autowired
-	SiteAuthenticationSuccessHandler siteAuthenticationSuccessHandler;
+	public static final String ADMIN_SECURITY_CONTEXT_KEY = "ADMIN_SECURITY_CONTEXT";
+	public static final String ADMIN_SAVED_REQUEST_KEY = "ADMIN_SECURITY__SAVED_REQUEST";
+
+	private static final String ADMIN_ANT_PATH = "/api/admin/**";
 
 	@Bean
-	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+	SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
 
 		// String[] antMatchersAnonymous = {"/api/v1/login/**", "/api/v1/content",};
 		// @formatter:off
@@ -55,8 +59,22 @@ public class DefaultSecurityConfig {
     // http.addFilterBefore(new JWTFilter(), LogoutFilter.class);
 		// @formatter:on
 
-		http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
-				.formLogin().successHandler(siteAuthenticationSuccessHandler);
+
+
+		// 这里设置的上下文的key和session的key，主要目的是和普通用户区别开来
+		HttpSessionSecurityContextRepository securityContextRepository =
+				new HttpSessionSecurityContextRepository();
+		securityContextRepository.setSpringSecurityContextKey(ADMIN_SECURITY_CONTEXT_KEY);
+		HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+		requestCache.setSessionAttrName(ADMIN_SAVED_REQUEST_KEY);
+
+
+		// 这里需要加上对token的限制
+		http.antMatcher(ADMIN_ANT_PATH).csrf().disable().authorizeRequests().anyRequest()
+				.authenticated();
+
+		// http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
+		// .formLogin().successHandler(siteAuthenticationSuccessHandler);
 
 		// http.rememberMe();
 
@@ -70,10 +88,10 @@ public class DefaultSecurityConfig {
 	// return new InMemoryUserDetailsManager(user);
 	// }
 
-	// 密码处理
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+	// // 密码处理
+	// @Bean
+	// public PasswordEncoder passwordEncoder() {
+	// return new BCryptPasswordEncoder();
+	// }
 
 }

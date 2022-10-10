@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 // 登录成功调取的接口
+// 注意这个接口会破坏默认的行为，比如原来访问一个接口需要登录，登录后会302到刚才访问的接口，加了这个后有麻烦了，不会自动302
 @Component
 public class SiteAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -40,6 +41,9 @@ public class SiteAuthenticationSuccessHandler implements AuthenticationSuccessHa
     UserDetails user = (UserDetails) authentication.getPrincipal();
 
     System.out.println(user);
+
+
+    System.out.print("getRequestURI:" + httpServletRequest.getRequestURI());
 
     // authentication.getAuthorities()
 

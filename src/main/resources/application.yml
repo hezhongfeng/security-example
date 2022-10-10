@@ -1,6 +1,18 @@
 server:
   port: 5123
 
+  servlet:
+    session:
+      # 后端会话的有效时间，注意如果访问系统，这个时间会顺延
+      # 默认单位是秒，最少为1分钟，不足按1分钟处理
+      timeout: 30d
+      cookie:
+        max-age: 30d
+
+# spring:
+#   session:
+#     timeout: 10
+
 logging:
   level:
     root: INFO
