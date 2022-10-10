@@ -28,7 +28,7 @@ public class DefaultSecurityConfig {
 	@Bean
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-		// String[] antMatchersAnonymous = {"/api/v1/login/**", "/api/v1/content",};
+		String[] antMatchersAnonymous = {"/api/v1/login/**", "/api/v1/content"};
 		// @formatter:off
 		// http
 				// 认证请求
@@ -61,7 +61,7 @@ public class DefaultSecurityConfig {
 
 		http.requestMatcher(new AndRequestMatcher(
 				new NegatedRequestMatcher(new AntPathRequestMatcher(AdminSecurityConfig.ADMIN_ANT_PATH)))) // 去除admin所有的API接口
-				.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
+				.authorizeRequests(authorizeRequests -> authorizeRequests.antMatchers(antMatchersAnonymous).permitAll().anyRequest().authenticated())
 				.formLogin().successHandler(siteAuthenticationSuccessHandler);
 
 		// http.rememberMe();

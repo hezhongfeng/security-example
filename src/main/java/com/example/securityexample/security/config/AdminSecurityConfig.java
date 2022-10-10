@@ -68,10 +68,13 @@ public class AdminSecurityConfig {
 		HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
 		requestCache.setSessionAttrName(ADMIN_SAVED_REQUEST_KEY);
 
+		// @formatter:off
 
 		// 这里需要加上对token的限制
-		http.antMatcher(ADMIN_ANT_PATH).csrf().disable().authorizeRequests().anyRequest()
-				.authenticated();
+		http.antMatcher(ADMIN_ANT_PATH).csrf().disable()
+		    .authorizeRequests().anyRequest().authenticated();
+
+		// @formatter:on
 
 		// http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
 		// .formLogin().successHandler(siteAuthenticationSuccessHandler);
