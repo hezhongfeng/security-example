@@ -13,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 
 
 // 一般用户的 security config
@@ -55,7 +58,10 @@ public class DefaultSecurityConfig {
     // http.addFilterBefore(new JWTFilter(), LogoutFilter.class);
 		// @formatter:on
 
-		http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
+
+		http.requestMatcher(new AndRequestMatcher(
+				new NegatedRequestMatcher(new AntPathRequestMatcher(AdminSecurityConfig.ADMIN_ANT_PATH)))) // 去除admin所有的API接口
+				.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
 				.formLogin().successHandler(siteAuthenticationSuccessHandler);
 
 		// http.rememberMe();

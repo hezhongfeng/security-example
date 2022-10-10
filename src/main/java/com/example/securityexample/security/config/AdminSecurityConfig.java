@@ -24,7 +24,7 @@ public class AdminSecurityConfig {
 	public static final String ADMIN_SECURITY_CONTEXT_KEY = "ADMIN_SECURITY_CONTEXT";
 	public static final String ADMIN_SAVED_REQUEST_KEY = "ADMIN_SECURITY__SAVED_REQUEST";
 
-	private static final String ADMIN_ANT_PATH = "/api/admin/**";
+	public static final String ADMIN_ANT_PATH = "/api/admin/**";
 
 	@Bean
 	SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {

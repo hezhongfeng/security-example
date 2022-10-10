@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/custom")
+@RequestMapping("/api/admin/v1")
 // @PreAuthorize("@rbacAuthorityService.hasPermissions('custom')") // 必须具有 custom 权限才能访问
 public class CustomController {
 
